@@ -563,7 +563,7 @@ def run_cmd(cmd):
 
 def make_video(input_dir, img_fmt, video_filename, fps=24):
 
-    cmd = "ffmpeg -y -loglevel error -framerate %s -i %s/%s -vcodec libx264 -pix_fmt yuv420p -vf \"scale=trunc(iw/2)*2:trunc(ih/2)*2\" %s" \
+    cmd = "ffmpeg -y -loglevel error -f image2 -framerate %s -i %s/%s -vcodec libx264 -pix_fmt yuv420p -vf \"scale=trunc(iw/2)*2:trunc(ih/2)*2\" %s" \
             %(fps, input_dir, img_fmt, video_filename)
 
     run_cmd(cmd)

@@ -44,7 +44,7 @@ if __name__ == "__main__":
     ### load model opts
     opts_filename = os.path.join('pretrained_models', "ECCV18_blind_consistency_opts.pth")
     print("Load %s" %opts_filename)
-    with open(opts_filename, 'r') as f:
+    with open(opts_filename, 'rb') as f:
         model_opts = pickle.load(f)
 
 
@@ -94,13 +94,15 @@ if __name__ == "__main__":
 
         if len(frame_list) == len(output_list) and not opts.redo:
             print("Output frames exist, skip...")
+            #if len(glob.glob(os.path.join(input_dir, "*.avi")))==0:
+            utils.make_video(output_dir, '%05d.jpg', os.path.join(output_dir, "%s.avi" %(video)), fps=24)
             continue
 
-
+        
         ## frame 0
         frame_p1 = utils.read_img(os.path.join(process_dir, "00000.jpg"))
         output_filename = os.path.join(output_dir, "00000.jpg")
-        utils.save_img(frame_p1, output_filename)
+        utils.save_img(cv2.resize(frame_p1,(4000,4000),cv2.INTER_CUBIC), output_filename)
 
         lstm_state = None
 
@@ -157,9 +159,10 @@ if __name__ == "__main__":
             
             ### save output frame
             output_filename = os.path.join(output_dir, "%05d.jpg" %(t))
-            utils.save_img(frame_o2, output_filename)
+            utils.save_img(cv2.resize(frame_o2,(4000,4000),cv2.INTER_CUBIC), output_filename)
                     
         ## end of frame
+        utils.make_video(output_dir, '%05d.jpg', os.path.join(output_dir, "%s.avi" %(video)), fps=24)
     ## end of video
                     
 
